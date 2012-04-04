@@ -31,6 +31,7 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
+app.get('/sites', routes.sites);
 app.get('/latest/:id/:pos?', routes.details);
 app.get('/times/:id/:range?', routes.history);
 

@@ -16,15 +16,30 @@ module.exports.index = function( request, response ) {
     response.end('<p>302. Redirecting to index.html</p>');
 };
 
+exports.sites = function( request, response ) {
+    var results = [];
+    for ( var u in global.options.urls ) {
+        results[u] = {
+                id: u,
+                url: global.options.urls[u]
+        };
+    }
+    response.setHeader("Content-Type", "application/json");
+    response.end( JSON.stringify(results) );
+};
+
 exports.details = function( request, response ) {
     var id  = request.params.id;
     var pos = request.params.pos ? - request.params.pos : -1;
-    console.log("DETAILS", id);
+    // console.log("DETAILS", id);
     
     client.lindex( rconn.getid(id), pos, function(err, data) {
-        var results = JSON.parse(data);
-        results.url = global.options.urls[id];
-        console.log(results);
+        var results      = JSON.parse(data);
+        
+        results.id       = id;
+        results.url      = global.options.urls[id];
+        results.created  = new Date(results.created);
+        results.finished = new Date(results.finished);
         
         response.setHeader('Content-Type', 'application/json');
         response.end( JSON.stringify(results) + '\n' );
@@ -34,8 +49,7 @@ exports.details = function( request, response ) {
 exports.history = function( request, response ) {
     var id    = request.params.id;
     var range = request.params.range ? - request.params.range : -100;
-
-    console.log("HISTORY", id);
+    // console.log("HISTORY", id);
 
     var results = {
        deltas: [],
@@ -44,8 +58,6 @@ exports.history = function( request, response ) {
     
     client.lrange(rconn.getid(id), range, -1, function(err, data) {
         for ( var d in data ) {
-            console.log("Looking at ", data[d]);
-            
             var item = JSON.parse(data[d]);
             results.deltas.push(item.delta);
             if (typeof item.status != "number") {

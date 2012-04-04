@@ -1,0 +1,26 @@
+    <tr>
+        <th class="toprow">Web Site</th>
+        <td class="toprow url"><a href="${url}">${url}</a></td>
+        <td rowspan="3">
+            <div id="chart-${id}"></div>
+        </td>
+    </tr>
+    <tr>
+        <th>Latest</th>
+        <td>
+            <table>
+                <tr title="${results}">
+                    <th>Status</th>
+                    <td>${status}</td>
+                </tr>
+                <tr title="${created}">
+                    <th>Time</th>
+                    <td>${delta} milliseconds</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <th>Errors</th>
+        <td id="errors-${id}">0</td>
+    </tr>

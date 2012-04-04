@@ -1,0 +1,60 @@
+body {
+  margin-top: 20px;
+  background-color: #eee;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: white;
+  text-decoration: none
+}
+
+h1 {
+  font-size: 72px;
+  color: #666;
+  text-shadow: 5px 6px #ccc;
+  margin-bottom: 0px;  
+}
+#contents {
+  text-align: center;
+  margin: 20px;
+}
+
+#charts {
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #aaa;
+  background-color: white;
+  box-shadow: 3px 3px 5px 6px #ccc;
+    border-spacing: 0px;  
+}
+
+#charts th {
+  white-space: nowrap;
+  text-align: right;
+  vertical-align: top;
+  padding: 2px 8px;
+}
+#charts td {
+  text-align: left;
+  vertical-align: top;
+  padding: 2px 8px;
+}
+.url {
+  width: 100%;
+  white-space: nowrap;
+}
+.toprow {
+  background-color: #0E6CCE;
+  color: white;
+}
+
+#notes {
+  padding: 0px 20px; 
+  color: #666;
+  font-size: 12px;
+}
+#notes a {
+  color: #0E6CCE;
+  border-bottom: 1px dotted;
+}
