@@ -50,6 +50,7 @@ h1 {
 }
 
 #notes {
+  display: none;
   padding: 0px 20px; 
   color: #666;
   font-size: 12px;

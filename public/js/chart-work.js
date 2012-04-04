@@ -42,6 +42,7 @@ var history = {
 function setupCharts() {
     $.getJSON('/sites', function( data ) {
         for (var d in data) {
+            var site = data[d];
             $("#charts").append("<tbody id='section-"+d+"'></tbody>");
             $.fuzzytoast({ 
                 template    : 'templates/table-data.html', 
@@ -50,7 +51,8 @@ function setupCharts() {
                 finished    : timerCallback(d)
             });
             
-            setInterval(timerCallback(d), 20000);
+            console.log("Refreshing", site.url, "every",  site.refresh, "seconds");
+            setInterval(timerCallback(d), site.refresh * 1000);
         }
     });
 }
@@ -64,6 +66,11 @@ function timerCallback(id) {
 function dataAcquisition(id) {
 
     $.getJSON('/times/'+id+'/100', function( data ) {
+        
+        $("#status-"+id).html( data.latest.status )
+            .parent().attr('title', data.latest.results);
+        $("#delta-"+id ).html( data.latest.delta + " milliseconds")
+            .parent().attr('title', data.latest.created);
         $("#errors-"+id).html( data.errors );
         
         if ( ! history.chart[id] ) {

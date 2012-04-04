@@ -21,7 +21,8 @@ exports.sites = function( request, response ) {
     for ( var u in global.options.urls ) {
         results[u] = {
                 id: u,
-                url: global.options.urls[u]
+                url: global.options.urls[u],
+                refresh: global.options.seconds
         };
     }
     response.setHeader("Content-Type", "application/json");
@@ -52,19 +53,29 @@ exports.history = function( request, response ) {
     // console.log("HISTORY", id);
 
     var results = {
+       id:     id,
+       url:    global.options.urls[id],
        deltas: [],
        errors: 0
     };
-    
-    client.lrange(rconn.getid(id), range, -1, function(err, data) {
-        for ( var d in data ) {
-            var item = JSON.parse(data[d]);
-            results.deltas.push(item.delta);
-            if (typeof item.status != "number") {
-                results.errors++;
+
+    client.lindex( rconn.getid(id), -1, function(err, data) {
+        var latest = JSON.parse(data);
+        latest.created  = new Date(latest.created);
+        latest.finished = new Date(latest.finished);
+        results.latest   = latest;
+        
+        client.lrange(rconn.getid(id), range, -1, function(err, data) {
+            for ( var d in data ) {
+                var item = JSON.parse(data[d]);
+                results.deltas.push(item.delta);
+                if (typeof item.status != "number") {
+                    results.errors++;
+                }
             }
-        }
-        response.end( JSON.stringify(results) );
+            response.end( JSON.stringify(results) );
+        });
     });
+
     
 };
